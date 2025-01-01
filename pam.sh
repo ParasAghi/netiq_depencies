@@ -45,7 +45,7 @@ echo "Please reboot the system for SELinux changes to take effect."
 
 yum clean all
 
-yum install glibc*.i686 nmap bc lsof ksh yum-utils createrepo unzip zip net-tools
+yum install glibc*.i686 nmap bc lsof ksh yum-utils createrepo unzip zip net-tools redhat-lsb
 
 
 systemctl stop firewalld
