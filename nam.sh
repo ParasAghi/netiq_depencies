@@ -21,7 +21,7 @@ fi
 # Disable SELinux
 sed -i 's/^SELINUX=.*/SELINUX=disabled/' "$SELINUX_CONFIG"
 
-# Verify changes
+# Verify SELinux changes
 if grep -q '^SELINUX=disabled' "$SELINUX_CONFIG"; then
   echo "SELinux has been disabled in $SELINUX_CONFIG."
 else
@@ -29,7 +29,26 @@ else
   exit 1
 fi
 
-echo "Please reboot the system for changes to take effect."
+
+# Check RHEL subscription status
+if ! subscription-manager status &>/dev/null; then
+  echo "System is not subscribed. Registering the system..."
+
+  # Register and attach subscription
+  sudo subscription-manager register --username=manankharbanda30@gmail.com --password=Novell@12345678
+  if [ $? -eq 0 ]; then
+    echo "System successfully registered."
+    sudo subscription-manager attach --auto
+    echo "Subscription attached successfully."
+  else
+    echo "Failed to register the system. Please check your credentials."
+    exit 1
+  fi
+else
+  echo "System is already subscribed."
+fi
+
+echo "Please reboot the system for SELinux changes to take effect."
 
 
 
