@@ -51,7 +51,7 @@ fi
 
 echo "Please reboot the system for SELinux changes to take effect."
 
-
+yum clean all
 
 yum install bc lsof ksh yum-utils createrepo unzip zip net-tools libgcc*.i686 libncurses* ncurses-libs chkconfig rsyslog rsyslog-gnutls binutils patch apr apr-util libtool-ltdl unixODBC net-snmp-libs net-snmp iproute initscripts -y
 
