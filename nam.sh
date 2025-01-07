@@ -1,12 +1,41 @@
 #!/bin/bash
 
-# Check if the script is being run as root
-if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root."
-  exit 1
+# Check for root privileges
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root"
+   exit 1
 fi
 
-# File to be modified
+# Get local IP address excluding loopback and non-eth interfaces
+LOCAL_IP=$(ip -4 addr show | grep -v "127.0.0.1" | grep -v "inet6" | grep -oP "(?<=inet\s)\d+(\.\d+){3}" | head -n 1)
+
+# Check if local IP was detected
+if [[ -z "$LOCAL_IP" ]]; then
+    echo "Error: Unable to detect a local IP address."
+    exit 1
+fi
+
+# Get the fully qualified domain name (FQDN)
+FQDN=$(hostname --fqdn 2>/dev/null)
+
+# Check if FQDN was detected
+if [[ -z "$FQDN" ]]; then
+    echo "Error: Unable to detect FQDN."
+    exit 1
+fi
+
+# Replace existing entry in /etc/hosts if the IP already exists
+if grep -q "$LOCAL_IP" /etc/hosts; then
+    echo "An entry for IP $LOCAL_IP already exists in /etc/hosts. Replacing it."
+    # Remove the old entry
+    sed -i "/$LOCAL_IP/d" /etc/hosts
+fi
+
+# Add the new entry to /etc/hosts
+echo "$LOCAL_IP $FQDN" >> /etc/hosts
+echo "Host entry added to /etc/hosts: $LOCAL_IP $FQDN"
+
+# File to be modified for SELinux
 SELINUX_CONFIG="/etc/selinux/config"
 
 # Backup the current SELinux config file
@@ -49,17 +78,20 @@ else
   echo "System is already subscribed."
 fi
 
+# Reboot notification for SELinux changes
 echo "Please reboot the system for SELinux changes to take effect."
 
+# Install necessary packages
 yum clean all
-
 yum install bc lsof ksh yum-utils createrepo unzip zip net-tools nmap libgcc*.i686 libncurses* ncurses-libs chkconfig rsyslog rsyslog-gnutls binutils patch apr apr-util libtool-ltdl unixODBC net-snmp-libs net-snmp iproute initscripts -y
-
 yum install libXtst-*.i686 libXrender-*.i686 libXi-*.i686  glibc-*.i686 libgcc-*.i686 gettext libXau.i686 libxcb.i686 libstdc++ libnsl* libnsl*.i686 libX11.i686 libXext.i686  -y
-
 yum install openldap* -y
 
-
+# Disable and stop firewalld
 systemctl stop firewalld
 systemctl disable firewalld
 systemctl mask firewalld
+
+echo "Please reboot and recheck hostentry."
+
+cat /etc/hosts
