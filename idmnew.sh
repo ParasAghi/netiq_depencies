@@ -24,14 +24,16 @@ if [[ -z "$FQDN" ]]; then
     exit 1
 fi
 
-# Check if the entry already exists in /etc/hosts
+# Replace existing entry in /etc/hosts if the IP already exists
 if grep -q "$LOCAL_IP" /etc/hosts; then
-    echo "An entry for IP $LOCAL_IP already exists in /etc/hosts."
-else
-    # Add the entry to /etc/hosts
-    echo "$LOCAL_IP $FQDN" >> /etc/hosts
-    echo "Host entry added to /etc/hosts: $LOCAL_IP $FQDN"
+    echo "An entry for IP $LOCAL_IP already exists in /etc/hosts. Replacing it."
+    # Remove the old entry
+    sed -i "/$LOCAL_IP/d" /etc/hosts
 fi
+
+# Add the new entry to /etc/hosts
+echo "$LOCAL_IP $FQDN" >> /etc/hosts
+echo "Host entry added to /etc/hosts: $LOCAL_IP $FQDN"
 
 # File to be modified for SELinux
 SELINUX_CONFIG="/etc/selinux/config"
