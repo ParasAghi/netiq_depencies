@@ -86,6 +86,7 @@ yum install bc lsof ksh yum-utils createrepo unzip zip net-tools libgcc*.i686 li
 yum install libXtst-*.i686 libXrender-*.i686 libXi-*.i686 glibc-*.i686 libgcc-*.i686 gettext libXau.i686 libxcb.i686 libstdc++ libnsl* libnsl*.i686 libX11.i686 libXext.i686 -y
 yum install openldap* -y
 timedatectl set-ntp true
+systemctl restart chronyd
 # Disable and stop firewalld
 systemctl stop firewalld
 systemctl disable firewalld
