@@ -82,11 +82,10 @@ fi
 echo "Please reboot the system for SELinux changes to take effect."
 
 # Install necessary packages
-yum clean all
 yum install bc lsof ksh yum-utils createrepo unzip zip net-tools libgcc*.i686 libncurses* ncurses-libs chkconfig iproute nmap initscripts -y
 yum install libXtst-*.i686 libXrender-*.i686 libXi-*.i686 glibc-*.i686 libgcc-*.i686 gettext libXau.i686 libxcb.i686 libstdc++ libnsl* libnsl*.i686 libX11.i686 libXext.i686 -y
 yum install openldap* -y
-
+timedatectl set-ntp true
 # Disable and stop firewalld
 systemctl stop firewalld
 systemctl disable firewalld
