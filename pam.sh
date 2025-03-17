@@ -27,7 +27,7 @@ fi
 if ! subscription-manager status &>/dev/null; then
   echo "System is not subscribed. Registering the system..."
   
-  echo -e "manankharbanda30@gmail.com\nNovell@12345678" | sudo subscription-manager register --username=manankharbanda30@gmail.com --password=Novell@12345678
+  echo -e "manankharbanda30@gmail.com\nNovell@12345678" | sudo subscription-manager register --username=rahultest12126@gmail.com --password=Novell@12345678
   if [ $? -eq 0 ]; then
     echo "System successfully registered."
     
