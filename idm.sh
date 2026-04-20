@@ -63,7 +63,7 @@ if ! subscription-manager status &>/dev/null; then
   echo "System is not subscribed. Registering the system..."
   
   # Register the system using echo and pipe to avoid user interaction
-  echo -e "manankharbanda30@gmail.com\nNovell@12345678" | sudo subscription-manager register --username=rahultest12126@gmail.com --password=Novell@12345678
+  echo -e "rahultest12126@gmail.com\nNovell@12345678" | sudo subscription-manager register --username=rahultest12126@gmail.com --password=Novell@12345678
   if [ $? -eq 0 ]; then
     echo "System successfully registered."
     
@@ -85,6 +85,7 @@ echo "Please reboot the system for SELinux changes to take effect."
 yum install bc lsof ksh yum-utils createrepo unzip zip net-tools libgcc*.i686 libncurses* ncurses-libs chkconfig iproute nmap initscripts -y
 yum install libXtst-*.i686 libXrender-*.i686 libXi-*.i686 glibc-*.i686 libgcc-*.i686 gettext libXau.i686 libxcb.i686 libstdc++ libnsl* libnsl*.i686 libX11.i686 libXext.i686 -y
 yum install openldap* -y
+yum install alsa-util* -y
 timedatectl set-ntp true
 systemctl restart chronyd
 # Disable and stop firewalld
