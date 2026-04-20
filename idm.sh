@@ -82,7 +82,7 @@ fi
 echo "Please reboot the system for SELinux changes to take effect."
 
 # Install necessary packages
-yum install bc lsof ksh yum-utils createrepo unzip zip net-tools libgcc*.i686 libncurses* ncurses-libs chkconfig iproute nmap initscripts -y
+yum install bc lsof ksh yum-utils createrepo unzip zip net-tools libgcc*.i686 libncurses* ncurses-libs chkconfig iproute nmap initscripts nmap -y
 yum install libXtst-*.i686 libXrender-*.i686 libXi-*.i686 glibc-*.i686 libgcc-*.i686 gettext libXau.i686 libxcb.i686 libstdc++ libnsl* libnsl*.i686 libX11.i686 libXext.i686 -y
 yum install openldap* -y
 yum install alsa-util* -y
